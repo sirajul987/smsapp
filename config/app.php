@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Dhaka',
+    'timezone' => env('APP_TIMEZONE', 'Europe/Prague'),
     // 'timezone' => 'Europe/Prague',
 
     /*

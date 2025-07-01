@@ -37,9 +37,6 @@ class ImportCsvController extends Controller
         foreach ($fileContents as $line) {
             $smsPeriod += $smsPeriod ;
             $data = str_getcsv($line);
-            // $currentDateTime = date('Y-m-d H:i:s'); // Get current date and time
-            // $newDateTime = date('Y-m-d H:i:s', strtotime($currentDateTime . ' +' . $smsPeriod . ' minutes'));
-            //
             $currentDateTime = Carbon::now();
             $newDateTime = $currentDateTime->addMinutes($smsPeriod);
             Sms::create([

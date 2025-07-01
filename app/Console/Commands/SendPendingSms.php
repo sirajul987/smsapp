@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Models\Sms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 
 class SendPendingSms extends Command
 {
@@ -29,29 +31,35 @@ class SendPendingSms extends Command
         }
     }
 
-    private function sendSms($phone, $message)
+    private function sendSms($to, $message)
     {
-        $apiUrl = 'https://api.globalsms.com/send';
-        $apiKey = 'your-api-key';
+        // API endpoint
+        $url =  env('API_END_POINT');
 
-        //Prepare SMS data
-        $smsData = [
-            'to' => $phone,
-            'message' => $message
-        ];
+        // API Key
+        $apiKey = env('API_KEY');
 
-        // Send SMS using HTTP client
-        $response = Http::post($apiUrl, [
-            'api_key' => $apiKey,
-            'to' => $smsData['to'],
-            'message' => $smsData['message']
+        // Message details
+        $from = env('MSG_FROM');
+        $schedule = "";
+        $reference = "";
+
+        // Create a Guzzle client instance
+        $client = new Client();
+
+        // Send POST request with parameters
+        $response = $client->post($url, [
+            'form_params' => [
+                'apiKey' => $apiKey,
+                'message' => $message,
+                'from' => $from,
+                'to' => $to,
+                'schedule' => $schedule,
+                'reference' => $reference
+            ]
         ]);
 
-        // Handle response
-        if ($response->successful()) {
-            $this->info('SMS sent successfully.');
-        } else {
-            $this->error('Failed to send SMS.');
-        }
+        // Get response body
+        //$body = $response->getBody();
     }
 }

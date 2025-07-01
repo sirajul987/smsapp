@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sms', function (Blueprint $table) {
             $table->id();
-            $table->text('message');
+            $table->text('message')->collation('utf8mb4_unicode_ci');
             $table->string('target_phone_no');
             $table->timestamp('sms_sending_time')->nullable();
             $table->text('send_flag'); // Adding the new column
